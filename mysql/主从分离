@@ -1,0 +1,41 @@
+2017年10月23日 17:19:34
+
+
+~~~~~~
+master端：
+ #vi /etc/my.cnf
+       [mysqld]
+       log-bin=mysql-bin   //[必须]启用二进制日志
+       server-id=1      //[必须]服务器唯一ID，默认是1，一般取IP最后一段
+
+命令:
+~~~
+start master; 启动。
+show master status;  查看状态.
+show master status \G;
+show binlog status; 二进制日志
+show binlog status \G;
+
+
+
+
+————————————————————————————————————————————————————————————————————————d
+
+slave端：
+#vi /etc/my.cnf
+       [mysqld]
+       log-bin=mysql-bin   //[不是必须]启用二进制日志
+       server-id=2     //[必须]服务器唯一ID，默认是1，一般取IP最后一段
+       user=mysql
+       read_only=1      只读
+
+
+
+链接master：
+
+change master to
+master_host='192.168.145.222',
+master_user='mysync',
+master_password='q123456',
+master_log_file='mysql-bin.000004',
+master_log_pos=308;
